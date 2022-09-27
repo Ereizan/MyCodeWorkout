@@ -18,12 +18,12 @@ public class simpleDividers {
           simples.add(i);
         }
         
-        ArrayList<Integer> dividers = new ArrayList<>();
+        ArrayList<Double> dividers = new ArrayList<>();
         
         for (Integer m : simples){
             if (number % m == 0){
                 simple = false;
-                dividers.add(m);
+                dividers.add(m.doubleValue());
             } 
         }
         
@@ -34,7 +34,7 @@ public class simpleDividers {
         } else{
             double lane = number;
             boolean newBl = true;
-            for (Integer div : dividers){
+            for (Double div : dividers){
                 lane = lane / div;
             }
             for (Integer m : simples){
@@ -42,11 +42,11 @@ public class simpleDividers {
                     newBl = false;
                     break;
                 }
+                if (m > Math.sqrt(lane)) break;
             }
-            int newLane = (int) lane;
-            if (newBl) dividers.add(newLane);
-            for (Integer div : dividers){
-                sb.append(div);
+            if (newBl) dividers.add(lane);
+            for (Double div : dividers){
+                sb.append(String.format("%.0f", div));
                 if (dividers.indexOf(div) + 1 != dividers.size()) sb.append(", ");
             }
             System.out.printf("%s isn't simple! This divided by %s \n", number, sb);
