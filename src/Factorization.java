@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class simpleDividers {
+public class Factorization {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         double number = s.nextDouble();
@@ -28,7 +28,7 @@ public class simpleDividers {
         dividers.add(dividend);
 
         if (simple){
-            System.out.printf("%s is simple! \n", number);
+            System.out.printf("%.0f is simple! \n", number);
         } else{
             StringBuilder sb = new StringBuilder(" ");
             for (Double div : dividers){
