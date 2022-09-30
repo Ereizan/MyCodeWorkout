@@ -12,20 +12,22 @@ public class Factorization {
         int counter = (int) Math.floor(Math.sqrt(dividend));
         label: 
         for (int i = 2; i <= counter; i++){
-          for (Integer n : simples){
-              if (i % n == 0) continue label;
-          }
-          simples.add(i);
-          while (true){
-              if (dividend % i == 0){
-                  dividend /= i;
-                  simple = false;
-                  dividers.add((double) i);
-              } else break;
-          }
-          if (i > Math.sqrt(dividend)) break;
+            for (Integer n : simples){
+                if (i % n == 0) continue label;
+            }
+            simples.add(i);
+            while (true){
+                if (dividend % i == 0){
+                    dividend /= i;
+                    simple = false;
+                    dividers.add((double) i);
+                } else break;
+            }
+            if (i > Math.sqrt(dividend)) break;
         }
-        dividers.add(dividend);
+        if (dividend != 1){
+            dividers.add(dividend);
+        }
 
         if (simple){
             System.out.printf("%.0f is simple! \n", number);
