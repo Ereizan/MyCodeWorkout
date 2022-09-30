@@ -42,6 +42,8 @@ public class GameOfLife {
             }
         }
     }
+
+    // yes, I'm know, it's stupid
     static int findNeighbors(int column, int number, int[][] field){
         boolean notTopOfColumn = column > 0;
         boolean notTopOfLine = number > 0;
