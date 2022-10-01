@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 //]
 //Output: [1,2,3,4,8,12,11,10,9,5,6,7]
 
-public class matrixSpiral {
+public class MatrixSpiral {
     public static void main(String[] args) {
         int[] solution;
         int[][] matrix;
