@@ -8,60 +8,65 @@ public class DicePoker {
     static int count = 0;
     static final int[] dice = new int[5];
     static final Random random = new Random(System.nanoTime());
-    static final Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     static final int[] check = new int[7];
     static boolean finalTurn = false;
 
-
-
     public static void main(String[] args) {
         System.out.println("It's a dice poker! Press enter to your first drop");
-        try{System.in.read();}
-        catch(Exception e){e.printStackTrace();}
-        dropAll();
-        playersDecide();
-        combinationChecking();
-        int playCount = getCount();
-        System.out.println();
-        System.out.println("Your count now is " + playCount);
-        System.out.println();
-        System.out.println("Now your opponent dropping");
-        dropAll();
-        AIDropping();
-        combinationChecking();
-        int AICount = getCount();
-        System.out.println();
-        System.out.println("Your count now is " + playCount);
-        System.out.println("Your opponent's count now is " + AICount);
-        System.out.println();
-        finalTurn = true;
-        System.out.println("Second stage! Press enter to drop");
-        try{System.in.read();}
-        catch(Exception e){e.printStackTrace();}
-        dropAll();
-        playersDecide();
-        System.out.println("Your combination is " + finalCombinationCheck());
-        playCount += getCount();
-        System.out.println();
-        System.out.println("Your count now is " + playCount);
-        System.out.println();
-        System.out.println("Now your opponent dropping");
-        dropAll();
-        AIDropping();
-        System.out.println("Your opponent's combination is " + finalCombinationCheck());
-        AICount += getCount();
-        System.out.println("Your count now is " + playCount);
-        System.out.println("Your opponent's count now is " + AICount);
-        if (AICount == playCount) {
-            System.out.println("Draw!");
-        } else if (AICount > playCount) {
-            System.out.println("You lose!");
-        } else {
-            System.out.println("You WIN!");
+        while (true){
+            int playCount = 0;
+            int AICount = 0;
+            while (true){
+                getReady();
+                dropAll();
+                playersDecide();
+                if (!finalTurn) combinationChecking();
+                else {
+                    System.out.println("Your combination is " + finalCombinationCheck());
+                }
+                playCount += getCount();
+                System.out.println();
+                System.out.println("Your count now is " + playCount);
+                System.out.println();
+                System.out.println("Now your opponent dropping");
+                dropAll();
+                AIDropping();
+                if (!finalTurn) combinationChecking();
+                else {
+                    System.out.println("Your opponent's combination is " + finalCombinationCheck());
+                }
+                AICount += getCount();
+                System.out.println();
+                System.out.println("Your count now is " + playCount);
+                System.out.println("Your opponent's count now is " + AICount);
+                System.out.println();
+                if (finalTurn){
+                    if (AICount == playCount) {
+                        System.out.println("Draw!");
+                    } else if (AICount > playCount) {
+                        System.out.println("You lose!");
+                    } else {
+                        System.out.println("You WIN!");
+                    }
+                    break;
+                }
+                finalTurn = true;
+                System.out.println("Second stage! Press enter to drop");
+            }
+            finalTurn = false;
+            System.out.println("Play more? Enter any key for play, or N for exit.");
+            scanner = new Scanner(System.in);
+            String exit = scanner.nextLine();
+            if (exit.equalsIgnoreCase("N")) break;
         }
-
-
     }
+
+    private static void getReady() {
+        try{System.in.read();}
+        catch(Exception e){e.printStackTrace();}
+    }
+
     private static String finalCombinationCheck(){
         reCheckDices();
         String combinationName = "";
@@ -172,40 +177,6 @@ public class DicePoker {
             }
         }
     }
-    /*
-    static void combinationCheck (int[] drop){
-        boolean[] equality = new boolean[4];
-        equality[0] = drop[0] == drop[1];
-        equality[1] = drop[1] == drop[2];
-        equality[2] = drop[2] == drop[3];
-        equality[3] = drop[3] == drop[4];
-        String checkout = Arrays.toString(equality);
-        switch (checkout){
-            case "[true, true, true, true]":
-                count = count + (drop[0] * 2);
-                break;
-            case "[false, true, true, true]", "[true, true, true, false]":
-                count = count + drop[2];
-                break;
-            case "[true, true, false, false]", "[false, true, true, false]","[false, false, true, true]", "[true, true, false, true]", "[true, false, true, true]":
-                break;
-            case "[false, false, false, false]":
-                count = count - (drop[0]*3);
-                break;
-            case "[true, false, false, false]", "[false, true, false, false]", "[false, false, true, false]", "[true, false, false, true]", "[false, true, false, true]","[true, false, true, false]":
-                int tax = 0;
-                for (boolean t:equality){
-                    if (t){
-                        count = count - (drop[tax] * 2);
-                        break;
-                    }
-                    tax++;
-                }
-                break;
-        }
-    }
-    Я оставлю этот перл для истории.
-     */
 
     static void combinationChecking(){
         // а вот тут типа "правильная", но трудночитаемая дичь
@@ -261,31 +232,6 @@ public class DicePoker {
         }
     }
 
-    /*
-    // для истории странных решений
-    static int[] AIDecide (int[] drop) {
-        boolean[] equality = new boolean[4];
-        equality[0] = drop[0] == drop[1];
-        equality[1] = drop[1] == drop[2];
-        equality[2] = drop[2] == drop[3];
-        equality[3] = drop[3] == drop[4];
-        return switch (Arrays.toString(equality)) {
-            case "[false, true, true, true]" -> new int[1];
-            case "[true, true, true, false]" -> new int[]{4};
-            case "[true, true, false, false]", "[true, true, false, true]" -> new int[]{3, 4};
-            case "[false, true, true, false]" -> new int[]{0, 4};
-            case "[false, false, true, true]", "[true, false, true, true]" -> new int[]{0, 1};
-            case "[false, false, false, false]" -> new int[]{1, 2, 3};
-            case "[true, false, false, false]", "[true, false, true, false]", "[true, false, false, true]" ->
-                    new int[]{2, 3, 4};
-            case "[false, true, false, false]", "[false, true, false, true]" -> new int[]{0, 3, 4};
-            case "[false, false, true, false]" -> new int[]{0, 1, 4};
-            case "[false, false, false, true]" -> new int[]{0, 1, 2};
-            default -> new int[0];
-        };
-    }
-
-     */
     static int[] AIDecide () {
         reCheckDices();
         for (int i = 0; i < 7; i++){
