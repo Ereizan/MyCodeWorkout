@@ -57,18 +57,17 @@ class TwoDimensionalArrayIterator<T> implements Iterator<T> {
     
     public boolean hasNext(){
         if (index < al) return true;
-        return (index == al) && (indexTwo < array[al].length);
+        return indexTwo < array[al].length;
     } 
     
     public T next(){
         if (!hasNext()){
             throw new NoSuchElementException();
         }
-        if (indexTwo < array[index].length) {
-            return array[index][indexTwo++];
-        } 
-        indexTwo = 0;
-        index++;
+        if (indexTwo == array[index].length) {
+            index++;
+            indexTwo = 0;
+        }
         return array[index][indexTwo++];
     }
 }
