@@ -1,3 +1,5 @@
+package CSlistings;
+
 import java.util.Scanner;
 /*
 Unit 1.4.29 from "Computer Science" R.Sedgewick, K.Wayne, solution.
