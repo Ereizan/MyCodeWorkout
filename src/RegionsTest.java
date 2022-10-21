@@ -17,20 +17,22 @@ public class RegionsTest {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Random random = new Random(System.nanoTime());
+//        Random random = new Random(System.nanoTime());
+        String sizeString = scanner.nextLine();
+        String[] size = sizeString.split(" ");
       
-        m = scanner.nextInt();
-        n = scanner.nextInt();
+        m = Integer.parseInt(size[1]);
+        n = Integer.parseInt(size[0]);
         field = new int[m][n];
-
-        // случайным образом заполняем массив для теста
         for (int i = 0; i < m; i++){
+            String line = scanner.nextLine();
+            String[] numbers = line.split(" ");
             for (int j = 0; j < n; j++){
-                field[i][j] = random.nextInt(3) == 0? 1 : 0;
+                field[i][j] = Integer.parseInt(numbers[j]);
             }
         }
-        showField();
-        System.out.println();
+       // showField();// тестовый
+       // System.out.println();//тестовый
 
         // получаем массив с регионами и их эффективностью
         int[][] regions = findRegions();
@@ -49,9 +51,9 @@ public class RegionsTest {
         }
 
         //покажем видоизменненное поле - в нем проще соорентироваться
-        showField();
+//        showField(); // тестовый
 
-        System.out.println();
+//        System.out.println(); // тестовый
         //вывод решения
         System.out.println(maxSize);
     }
