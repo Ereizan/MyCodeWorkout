@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class RegionsTest {
         // случайным образом заполняем массив для теста
         for (int i = 0; i < m; i++){
             for (int j = 0; j < n; j++){
-                field[i][j] = random.nextInt(3)==0? 1 : 0;
+                field[i][j] = random.nextInt(3) == 0? 1 : 0;
             }
         }
         showField();
@@ -128,17 +129,25 @@ public class RegionsTest {
         return new int[][]{regionSize, regionEffectivity};
     }
     
-    //рекурсивный метод найдет всех плодородных соседей, которым пока не присвоен номер региона
-    //и присвоит им номер до вызова рекурсии, что позволяет выйти из рекурсии
+    //рекурсивный метод сел в лужу, теперь тут ламповый цикл с Эррай листом
     static void findNeighbor(int y, int x, int count){
-        field[y][x] = count;
-        for (int i = Math.max(0, (y - 1)); i <= Math.min((y + 1), (m-1)); i++){
-          for (int j = Math.max(0, (x - 1)); j <= Math.min((x + 1), (n-1)); j++){
-              if (field[i][j] == 1) {
-                  findNeighbor(i, j, count);
-              }
-          }
-      }
-        
+        ArrayList<Integer[]> coordinates = new ArrayList<>();
+        Integer[] start = {y, x};
+        coordinates.add(start);
+        int border = 1;
+        for (int index = 0; index < border; index++){
+            y = coordinates.get(index)[0];
+            x = coordinates.get(index)[1];
+            for (int i = Math.max(0, (y - 1)); i <= Math.min((y + 1), (m-1)); i++) {
+                for (int j = Math.max(0, (x - 1)); j <= Math.min((x + 1), (n - 1)); j++) {
+                    if (field[i][j] == 1) {
+                        field[i][j] = count;
+                        Integer[] pair = {i, j};
+                        coordinates.add(pair);
+                        border++;
+                    }
+                }
+            }
+        }
     }
 }
