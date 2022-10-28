@@ -21,6 +21,11 @@ public class DotsAndLines {
         dots = new double[dotsNumber][2];
         angle = (Math.PI * 2) / dotsNumber;
         for (int i = 0; i < dotsNumber; i++) {
+            try {
+                Thread.sleep(0x64);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             double y = radius * Math.sin(angle * i);
             double x = radius * Math.cos(angle * i);
             dots[i][0] = y;
@@ -30,6 +35,11 @@ public class DotsAndLines {
         for (int i = 0; i < dotsNumber; i++) {
             for (int j = i; j < dotsNumber; j++) {
                 if (Math.random() < probability) {
+                    try {
+                        Thread.sleep(0x64);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     StdDraw.line(dots[i][1], dots[i][0], dots[j][1], dots[j][0]);
                 }
             }
