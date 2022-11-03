@@ -1,13 +1,13 @@
 import java.util.Scanner;
 import java.util.Arrays;
 /*
-WA 4!!!
+WA 13!!!
 https://acm.timus.ru/problem.aspx?space=1&num=1039
 */
 public class AnniversaryParty {
     static Scanner s = new Scanner(System.in);
     static Mate[] mates;
-    
+
     public static void main(String[] args) {
         short number = s.nextShort();
 
@@ -40,7 +40,13 @@ public class AnniversaryParty {
 
         welcome(mates[bigBoss]);
         for (Mate mate : mates){
-            if (!mate.party) {
+            if (!mate.party && mate.slaves.length != 0 && mate.smile > 0) {
+                if (mate.boss != -1){
+                    if (mates[mate.boss].party && (mates[mate.boss].smile >= mate.smile)) continue;
+                    mates[mate.boss].party = false;
+                    // может, если босс не идет единичкой, то костыль не фурычит, т.к. его снова включает
+//                     его собственный метод
+                }
                 boolean b = true;
                 for (short sl : mate.slaves){
                     b = b && (!mates[sl].party);
@@ -50,11 +56,12 @@ public class AnniversaryParty {
         }
         int sum = 0;
         for (Mate mate : mates){
+            // System.out.println(mate.party + " " + mate.id);
             if (mate.party) {
                 sum += mate.smile;
             }
         }
-        
+// System.out.println();
         System.out.println(sum);
     }
     static void welcome(Mate mate){
@@ -64,7 +71,9 @@ public class AnniversaryParty {
                 for (short sl : mate.slaves){
                     if (mates[sl].smile >= 0){
                         sum += mates[sl].smile;
-                    } 
+                    } else {
+                        mates[sl].party = false;
+                    }
                 }
                 if (sum < mate.smile) {
                     for (short sl : mate.slaves){
@@ -79,7 +88,7 @@ public class AnniversaryParty {
             }
         }
     }
-    
+
 }
 class Mate {
     short id;
@@ -87,18 +96,18 @@ class Mate {
     byte smile;
     boolean party;
     short[] slaves = new short[0];
-    
+
     public Mate (short id, short boss, byte smile){
         this.id = id;
         this.boss = boss;
         this.smile = smile;
         party = true;
     }
-    
+
     public void addSlave(short slave){
         slaves = Arrays.copyOf(slaves, slaves.length + 1);
         slaves[slaves.length - 1] = slave;
     }
 
-    
+
 }
