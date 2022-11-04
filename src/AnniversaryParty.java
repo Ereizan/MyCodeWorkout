@@ -37,26 +37,10 @@ public class AnniversaryParty {
             }
             mates[mates[i].boss].addSlave(i);
         }
-
         welcome(mates[bigBoss]);
-        for (Mate mate : mates){
-            if (!mate.party && mate.slaves.length != 0 && mate.smile > 0) {
-                if (mate.boss != -1){
-                    if (mates[mate.boss].party && (mates[mate.boss].smile >= mate.smile)) continue;
-                    mates[mate.boss].party = false;
-                    // может, если босс не идет единичкой, то костыль не фурычит, т.к. его снова включает
-//                     его собственный метод
-                }
-                boolean b = true;
-                for (short sl : mate.slaves){
-                    b = b && (!mates[sl].party);
-                }
-                mate.party = b;
-            }
-        }
         int sum = 0;
         for (Mate mate : mates){
-            // System.out.println(mate.party + " " + mate.id);
+//             System.out.println(mate.party + " " + mate.id);
             if (mate.party) {
                 sum += mate.smile;
             }
@@ -66,25 +50,21 @@ public class AnniversaryParty {
     }
     static void welcome(Mate mate){
         if (mate.slaves.length != 0){
+            for (short sl : mate.slaves){
+                welcome(mates[sl]);
+            }
             if (mate.party){
                 int sum = 0;
                 for (short sl : mate.slaves){
-                    if (mates[sl].smile >= 0){
-                        sum += mates[sl].smile;
-                    } else {
-                        mates[sl].party = false;
-                    }
+                    if (mates[sl].party) sum += mates[sl].smile;
                 }
                 if (sum < mate.smile) {
                     for (short sl : mate.slaves){
-                        mates[sl].party = false;
+                       mates[sl].party = false;
                     }
                 } else {
                     mate.party = false;
                 }
-            }
-            for (short sl : mate.slaves){
-                welcome(mates[sl]);
             }
         }
     }
@@ -101,7 +81,7 @@ class Mate {
         this.id = id;
         this.boss = boss;
         this.smile = smile;
-        party = true;
+        party = smile > 0;
     }
 
     public void addSlave(short slave){
