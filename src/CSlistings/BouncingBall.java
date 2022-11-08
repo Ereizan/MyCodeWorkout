@@ -3,7 +3,7 @@ package CSlistings;
 import tw.StdAudio;
 import tw.StdDraw;
 /*
-Listing 1.5.6 from "Computer Science" R.Sedgewick, K.Wayne, + task 1.5.34 + task 1.5.35.
+Listing 1.5.6 from "Computer Science" R.Sedgewick, K.Wayne, + task 1.5.34 + task 1.5.35 + some additions
  */
 public class BouncingBall {
     public static void main(String[] args) {
@@ -19,13 +19,12 @@ public class BouncingBall {
 
         StdDraw.clear(StdDraw.LIGHT_GRAY);
 
-        while (true)  {
-
+        do {
             if (Math.abs(rx + vx) > 1.0 - radius) {
                 vx = -vx;
                 wallTic();
             }
-            if (Math.abs(ry + vy) > 1.0 - radius){
+            if (Math.abs(ry + vy) > 1.0 - radius) {
                 vy = -vy;
                 floorTic();
             }
@@ -33,6 +32,13 @@ public class BouncingBall {
 
             rx += vx;
             ry += vy;
+
+            if (StdDraw.isMousePressed()) {
+                rx = StdDraw.mouseX();
+                ry = StdDraw.mouseY();
+                vx = 0.015;
+                vy = 0.023;
+            }
 
             StdDraw.setPenColor(StdDraw.WHITE);
             StdDraw.filledCircle(previousRx, previousRy, radius);
@@ -45,8 +51,7 @@ public class BouncingBall {
             StdDraw.pause(20);
             previousRx = rx;
             previousRy = ry;
-            if (ry < -1.0) break;
-        }
+        } while (ry > -1.0);
     }
     static void wallTic(){
         int pitch = -8;
