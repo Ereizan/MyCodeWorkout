@@ -1,6 +1,6 @@
 import java.util.Scanner;
 /*
-Tic-Tac-Toe game. AI is still weak
+Tic-Tac-Toe game. AI improved!
 */
 public class TicTacToe {
     static int[][] field;
@@ -94,8 +94,10 @@ public class TicTacToe {
 
     static void letsTry(){
         int sum = 0;
+        int edgeCount = 0;
         for (int i : getControl()){
-            if (i != 0) sum++;
+            if (i != 0) sum += i;
+            if (i > 0) edgeCount++;
         }
         int bestOfThe = -1;
         for (int i = 0; i < 3; i++){
@@ -103,12 +105,15 @@ public class TicTacToe {
                 if (field[i][j] != 0) continue;
                 field[i][j] = -1;
                 int newSum = 0;
+                int newEdgeCount = 0;
                 for (int n : getControl()){
-                    if (n != 0) newSum++;
+                    if (n != 0) newSum += n;
+                    if (n > 0) newEdgeCount++;
                 }
-                if (newSum <= sum){
+                if (newSum <= sum && newEdgeCount <= edgeCount){
                     bestOfThe = (i * 3) + j;
                     sum = newSum;
+                    edgeCount = newEdgeCount;
                 }
                 field[i][j] = 0;
             }
